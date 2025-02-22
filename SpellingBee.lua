@@ -1,7 +1,4 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local wordlist = {
     ["rbxassetid://119699946181489"] = "dolphin",
     ["rbxassetid://17620333788"] = "thesis",
@@ -167,7 +164,7 @@ local wordlist = {
     ["rbxassetid://17627928668"] = "obesity",
     ["rbxassetid://18263975679"] = "embassy",
     ["rbxassetid://18257432800"] = "oblivious",
-    ["rbxassetid://17707300132"] = "significance",
+    ["rbxassetid://1770﻿﻿﻿﻿7300132"] = "significance",
     ["rbxassetid://92147310918517"] = "ravenous",
     ["rbxassetid://71717044292435"] = "personnel",
     ["rbxassetid://111287681130849"] = "guideline",
@@ -328,7 +325,7 @@ local wordlist = {
     ["rbxassetid://18257236422"] = "favourable",
     ["rbxassetid://18264015967"] = "accumulation",
     ["rbxassetid://86286320452222"] = "hornswoggle",
-    ["rbxassetid://139833268158271"] = "surrogate", -- free space for new words, use an audio logger to find the audio that plays for each word.
+    ["rbxassetid://139833268158271"] = "surrogate", -- free space for new words, use an audio logger to find the aud﻿i﻿o﻿ ﻿that plays for each word.
     ["rbxassetid://80097477282865"] = "ash",
     ["rbxassetid://91248922608173"] = "ruby",
     ["rbxassetid://132283121031638"] = "wrist",
@@ -475,27 +472,19 @@ local function autotypeword(word)
     istypingmaybe = false
 end
 
-local Window = Fluent:CreateWindow({
-    Title = "Forky Hub" .. Fluent.Version,
-    SubTitle = "Spelling Bee",
-    TabWidth = 120,
-    Size = UDim2.fromOffset(360, 580),
-    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+local Window = Rayfield:CreateWindow({
+    Name = "Forky Hub",
+    LoadingTitle = "Spelling Bee",
+    LoadingSubtitle = "Made By CyBloxCyke",
+    ConfigurationSaving = {
+        Enabled = false,
+    },
 })
 
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "layout-dashboard" }), -- Example icon for Main
-    Fonts = Window:AddTab({ Title = "Fonts", Icon = "type" }) -- Example icon for Fonts
-}
+local Tab = Window:CreateTab("Main")
+local Label = Tab:CreateLabel("Current Word - None")
 
-Tabs.Main:AddParagraph({
-        Title = "Current Word - None",
-        Content = ""
-    })
-    
-    local function updatecurrentword(word)
+local function updatecurrentword(word)
     if typingword or lastword == word then return end
     lastword = word
     Label:Set("Current Word: " .. word)
@@ -526,233 +515,270 @@ local function checksound()
     fsic(workspace)
     fsic(game:GetService("SoundService"))
 end
-    
--- Copy Word Button
-Tabs.Main:AddButton({
-    Title = "Copy Word",
-    Description = "",
+
+Tab:CreateButton({
+    Name = "Copy The Word",
     Callback = function()
         setclipboard(lastword)
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "The word has been copied to your clipboard.",
+            Duration = 2,
+        })
     end,
 })
 
--- Auto Type Toggle
-local AutoTypeToggle = Tabs.Main:AddToggle("AutoTypeToggle", {
-    Title = "Auto Type",
-    Default = false,
+Tab:CreateToggle({
+    Name = "Auto Type",
+    CurrentValue = false,
+    Callback = function(state)
+        autotypeenabled = state
+        if not state then
+            typingword = false
+        end
+    end,
 })
 
-AutoTypeToggle:OnChanged(function(state)
-    autotypeenabled = state
-    if not state then
-        typingword = false
-    end
+Tab:CreateSlider({
+    Name = "Select Typing Speed",
+    Range = {0.01, 0.3},
+    Increment = 0.01,
+    CurrentValue = typingdelay,
+    Callback = function(value)
+        typingdelay = value
+    end,
+})
+
+Tab:CreateSlider({
+    Name = "Time Before Typing",
+    Range = {1.15, 2},
+    Increment = 0.01,
+    CurrentValue = pretypewait,
+    Callback = function(value)
+        pretypewait = value
+    end,
+})
+
+local fonts = Window:CreateTab("Fonts")
+
+fonts:CreateButton({
+    Name = "Comic Neue Angular",
+    Callback = function()
+        local args = {
+    [1] = "Comic Neue Angular",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Source Sans Pro",
+    Callback = function()
+        local args = {
+    [1] = "Source Sans Pro",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Patrick Hand",
+    Callback = function()
+        local args = {
+    [1] = "Patrick Hand",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Fondamento",
+    Callback = function()
+        local ﻿ar﻿gs﻿ =﻿ {
+    [1] = "Fondamento",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Kalam",
+    Callback = function()
+        local args = {
+    [1] = "Kalam",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Creepster",
+    Callback = function()
+        local args = {
+    [1] = "Creepster",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Grenze Gotisch",
+    Callback = function()
+        local args = {
+    [1] = "Grenze Gotisch",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Roman Antique",
+    Callback = function()
+        local args = {
+    [1] = "Roman Antique",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Amatic SC",
+    Callback = function()
+        local args = {
+    [1] = "Amatic SC",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Merriweather",
+    Callback = function()
+        local args = {
+    [1] = "Merriweather",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Special Elite",
+    Callback = function()
+        local args = {
+    [1] = "Special Elite",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Permanent Marker",
+    Callback = function()
+        local args = {
+    [1] = "Permanent Marker",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Fredoka One",
+    Callback = function()
+        local args = {
+    [1] = "Fredoka One",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Luckiest Guy",
+    Callback = function()
+        local args = {
+    [1] = "Luckiest Guy",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Bangers",
+    Callback = function()
+        local args = {
+    [1] = "Bangers",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Indie Flower",
+    Callback = function()
+        local args = {
+    [1] = "Denk One",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Denk One",
+    Callback = function()
+        local args = {
+    [1] = "Denk One",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+fonts:CreateButton({
+    Name = "Press Start 2P",
+    Callback = function()
+        local args = {
+    [1] = "Press Start 2P",
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
+
+    end,
+})
+
+game:GetService("RunService").Stepped:Connect(function()
+    pcall(function()
+        checksound()
+    end)
 end)
-
--- Typing Speed Slider
-local TypingSpeedSlider = Tabs.Main:AddSlider("TypingSpeedSlider", {
-    Title = "Typing Speed",
-    Description = "Adjust the typing speed.",
-    Default = typingdelay,  -- Initial value for typing delay
-    Min = 0.01,
-    Max = 0.3,
-    Rounding = 0.01,
-    Callback = function(value)
-        typingdelay = value  -- Set the typing delay to the slider value
-        print("Typing speed set to:", value)
-    end,
-})
-
--- Seconds Before Typing Slider
-local PreTypeWaitSlider = Tabs.Main:AddSlider("PreTypeWaitSlider", {
-    Title = "Seconds Before Typing",
-    Description = "Adjust the wait time before typing.",
-    Default = pretypewait,  -- Initial value for pre-type wait time
-    Min = 1.15,
-    Max = 2,
-    Rounding = 0.01,
-    Callback = function(value)
-        pretypewait = value  -- Set the pre-type wait time to the slider value
-        print("Pre-type wait time set to:", value)
-    end,
-})
-
--- Button for Comic Neue Angular
-Tabs.Fonts:AddButton({
-    Title = "Comic Neue Angular",
-    Description = "Set font to Comic Neue Angular",
-    Callback = function()
-        local args = { [1] = "Comic Neue Angular" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Source Sans Pro
-Tabs.Fonts:AddButton({
-    Title = "Source Sans Pro",
-    Description = "Set font to Source Sans Pro",
-    Callback = function()
-        local args = { [1] = "Source Sans Pro" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Patrick Hand
-Tabs.Fonts:AddButton({
-    Title = "Patrick Hand",
-    Description = "Set font to Patrick Hand",
-    Callback = function()
-        local args = { [1] = "Patrick Hand" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Fondamento
-Tabs.Fonts:AddButton({
-    Title = "Fondamento",
-    Description = "Set font to Fondamento",
-    Callback = function()
-        local args = { [1] = "Fondamento" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Kalam
-Tabs.Fonts:AddButton({
-    Title = "Kalam",
-    Description = "Set font to Kalam",
-    Callback = function()
-        local args = { [1] = "Kalam" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Creepster
-Tabs.Fonts:AddButton({
-    Title = "Creepster",
-    Description = "Set font to Creepster",
-    Callback = function()
-        local args = { [1] = "Creepster" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Grenze Gotisch
-Tabs.Fonts:AddButton({
-    Title = "Grenze Gotisch",
-    Description = "Set font to Grenze Gotisch",
-    Callback = function()
-        local args = { [1] = "Grenze Gotisch" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Roman Antique
-Tabs.Fonts:AddButton({
-    Title = "Roman Antique",
-    Description = "Set font to Roman Antique",
-    Callback = function()
-        local args = { [1] = "Roman Antique" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Amatic SC
-Tabs.Fonts:AddButton({
-    Title = "Amatic SC",
-    Description = "Set font to Amatic SC",
-    Callback = function()
-        local args = { [1] = "Amatic SC" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Merriweather
-Tabs.Fonts:AddButton({
-    Title = "Merriweather",
-    Description = "Set font to Merriweather",
-    Callback = function()
-        local args = { [1] = "Merriweather" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Special Elite
-Tabs.Fonts:AddButton({
-    Title = "Special Elite",
-    Description = "Set font to Special Elite",
-    Callback = function()
-        local args = { [1] = "Special Elite" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Permanent Marker
-Tabs.Fonts:AddButton({
-    Title = "Permanent Marker",
-    Description = "Set font to Permanent Marker",
-    Callback = function()
-        local args = { [1] = "Permanent Marker" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Fredoka One
-Tabs.Fonts:AddButton({
-    Title = "Fredoka One",
-    Description = "Set font to Fredoka One",
-    Callback = function()
-        local args = { [1] = "Fredoka One" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Luckiest Guy
-Tabs.Fonts:AddButton({
-    Title = "Luckiest Guy",
-    Description = "Set font to Luckiest Guy",
-    Callback = function()
-        local args = { [1] = "Luckiest Guy" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Bangers
-Tabs.Fonts:AddButton({
-    Title = "Bangers",
-    Description = "Set font to Bangers",
-    Callback = function()
-        local args = { [1] = "Bangers" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Indie Flower
-Tabs.Fonts:AddButton({
-    Title = "Indie Flower",
-    Description = "Set font to Indie Flower",
-    Callback = function()
-        local args = { [1] = "Indie Flower" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Denk One
-Tabs.Fonts:AddButton({
-    Title = "Denk One",
-    Description = "Set font to Denk One",
-    Callback = function()
-        local args = { [1] = "Denk One" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
-
--- Button for Press Start 2P
-Tabs.Fonts:AddButton({
-    Title = "Press Start 2P",
-    Description = "Set font to Press Start 2P",
-    Callback = function()
-        local args = { [1] = "Press Start 2P" }
-        game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(unpack(args))
-    end,
-})
