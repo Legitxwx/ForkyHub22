@@ -164,7 +164,7 @@ local wordlist = {
     ["rbxassetid://17627928668"] = "obesity",
     ["rbxassetid://18263975679"] = "embassy",
     ["rbxassetid://18257432800"] = "oblivious",
-    ["rbxassetid://1770﻿﻿﻿﻿7300132"] = "significance",
+    ["rbxassetid://17707300132"] = "significance",
     ["rbxassetid://92147310918517"] = "ravenous",
     ["rbxassetid://71717044292435"] = "personnel",
     ["rbxassetid://111287681130849"] = "guideline",
@@ -325,7 +325,7 @@ local wordlist = {
     ["rbxassetid://18257236422"] = "favourable",
     ["rbxassetid://18264015967"] = "accumulation",
     ["rbxassetid://86286320452222"] = "hornswoggle",
-    ["rbxassetid://139833268158271"] = "surrogate", -- free space for new words, use an audio logger to find the aud﻿i﻿o﻿ ﻿that plays for each word.
+    ["rbxassetid://139833268158271"] = "surrogate", -- free space for new words, use an audio logger to find the audio that plays for each word.
     ["rbxassetid://80097477282865"] = "ash",
     ["rbxassetid://91248922608173"] = "ruby",
     ["rbxassetid://132283121031638"] = "wrist",
@@ -475,14 +475,14 @@ end
 local Window = Rayfield:CreateWindow({
     Name = "Forky Hub",
     LoadingTitle = "Spelling Bee",
-    LoadingSubtitle = "Made By CyBloxCyke",
+    LoadingSubtitle = "By CyBloxCyke",
     ConfigurationSaving = {
         Enabled = false,
     },
 })
 
 local Tab = Window:CreateTab("Main")
-local Label = Tab:CreateLabel("Current Word - None")
+local Label = Tab:CreateLabel("Current Word: None")
 
 local function updatecurrentword(word)
     if typingword or lastword == word then return end
@@ -517,7 +517,7 @@ local function checksound()
 end
 
 Tab:CreateButton({
-    Name = "Copy The Word",
+    Name = "Copy Word",
     Callback = function()
         setclipboard(lastword)
         Rayfield:Notify({
@@ -540,7 +540,7 @@ Tab:CreateToggle({
 })
 
 Tab:CreateSlider({
-    Name = "Select Typing Speed",
+    Name = "Typing Speed",
     Range = {0.01, 0.3},
     Increment = 0.01,
     CurrentValue = typingdelay,
@@ -600,7 +600,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("EquipTypeFont"):FireServer(un
 fonts:CreateButton({
     Name = "Fondamento",
     Callback = function()
-        local ﻿ar﻿gs﻿ =﻿ {
+        local args = {
     [1] = "Fondamento",
 }
 
