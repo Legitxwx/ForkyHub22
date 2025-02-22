@@ -782,3 +782,99 @@ game:GetService("RunService").Stepped:Connect(function()
         checksound()
     end)
 end)
+
+local Tab = Window:CreateTab("Misc")
+
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local maxFPS = 9999 -- Default maximum FPS
+local targetFPS = maxFPS
+local fpsDisplayEnabled = false
+
+-- Create a ScreenGui to show the FPS
+local screenGui = Instance.new("ScreenGui", Player:WaitForChild("PlayerGui"))
+local fpsLabel = Instance.new("TextLabel", screenGui)
+fpsLabel.Size = UDim2.new(0, 200, 0, 50)
+fpsLabel.Position = UDim2.new(0, 10, 0, 10)
+fpsLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+fpsLabel.TextColor3 = Color3.new(1, 1, 1)
+fpsLabel.TextScaled = true
+fpsLabel.Text = "FPS: --"
+
+-- Function to update the FPS display
+local function updateFPSDisplay(fps)
+    fpsLabel.Text = "FPS: " .. tostring(math.floor(fps))
+end
+
+-- Function to set the max FPS
+local function setMaxFPS(fps)
+    if fps < 1 then fps = 1 end
+    targetFPS = fps
+    print("Max FPS set to: " .. targetFPS)
+
+    -- Disconnect previous connections if any
+    RunService.RenderStepped:Disconnect()
+    RunService.RenderStepped:Connect(function()
+        local startTime = tick()
+        wait(1 / targetFPS) -- Wait based on the desired FPS
+        local elapsedTime = tick() - startTime
+
+        -- Update the FPS display
+        updateFPSDisplay(1 / elapsedTime)
+    end)
+end
+
+-- Button to toggle FPS display
+local ButtonToggleFPSDisplay = Tab:CreateButton({
+    Name = "Toggle FPS Display",
+    Callback = function()
+        fpsDisplayEnabled = not fpsDisplayEnabled
+        screenGui.Enabled = fpsDisplayEnabled
+        if not fpsDisplayEnabled then
+            fpsLabel.Text = "FPS: --" -- Reset when hiding
+        end
+    end,
+})
+
+local ButtonRejoin = Tab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+        local currentPlaceId = game.PlaceId
+        TeleportService:Teleport(currentPlaceId, Player)
+    end,
+})
+
+local ButtonJoinOther = Tab:CreateButton({
+    Name = "Join Other Server",
+    Callback = function()
+        local currentPlaceId = game.PlaceId
+        TeleportService:TeleportToPlaceInstance(currentPlaceId, game.JobId, Player)
+    end,
+})
+
+local ButtonJoinSmall = Tab:CreateButton({
+    Name = "Join Small Server",
+    Callback = function()
+        local currentPlaceId = game.PlaceId
+        TeleportService:Teleport(currentPlaceId, Player)
+    end,
+})
+
+local Slider = Tab:CreateSlider({
+    Name = "FPS",
+    Range = {1, 9999},
+    Increment = 1,
+    Suffix = "FPS",
+    CurrentValue = maxFPS,
+    Flag = "Slider1",
+    Callback = function(Value)
+        setMaxFPS(Value)
+    end,
+})
+
+-- Initial call to set the default FPS value
+setMaxFPS(maxFPS)
